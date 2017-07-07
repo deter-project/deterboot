@@ -80,19 +80,19 @@ int do_getNetInfo(void)
 
 int doMFSBoot(const char *path) 
 {
-	if(strcmp(path, "http://192.168.252.1/linux-mfs") != 0)
-	{
-		WTFerror(&wtf, "unexpected mfs path: %s\n", path);
-		return TEST_ERROR;
-	}
-	WTFok(&wtf, "jumping into mfs now ...");
-	return bootMFS(path);
+  if(strcmp(path, "http://192.168.252.1/linux-mfs") != 0)
+  {
+    WTFerror(&wtf, "unexpected mfs path: %s\n", path);
+    return TEST_ERROR;
+  }
+  WTFok(&wtf, "jumping into mfs now ...");
+  return bootMFS(path);
 }
 
 int doChainBoot(const char *disk, int partition)
 {
-	WTFok(&wtf, "chainbooting into %s:%d ...", disk, partition);
-	return chainBoot(disk, partition);
+  WTFok(&wtf, "chainbooting into %s:%d ...", disk, partition);
+  return chainBoot(disk, partition);
 }
 
 
@@ -101,25 +101,25 @@ int tryBoot(void)
 {
   struct BootWhatResponse br;
   int err = bootWhat(&netinfo, &br);
-  
+
   if(err != BOOTWHAT_OK)
   {
     WTFerror(&wtf, "boot-what comms failure %d", err);
     return TEST_ERROR;
   }
-  
+
   if(br.info.opcode != BIOPCODE_REPLY)
   {
     WTFerror(&wtf, "unexpected opcode: %d", br.info.opcode);
     return TEST_ERROR;
   }
 
-	switch(br.what->type) {
-		case BIBOOTWHAT_TYPE_MFS: 
+  switch(br.what->type) {
+    case BIBOOTWHAT_TYPE_MFS: 
       doMFSBoot(br.what->what.mfs); 
       break;
 
-		case BIBOOTWHAT_TYPE_PART: 
+    case BIBOOTWHAT_TYPE_PART: 
       doChainBoot("hd0", br.what->what.partition); 
       break;
 
@@ -127,23 +127,23 @@ int tryBoot(void)
       //WTFok(&wtf, "entering wait period");
       printf("\rwaiting ... ");
       return BIBOOTWHAT_TYPE_WAIT;
-		
-		// *** NOT IMPLEMENTED *** //
-		case BIBOOTWHAT_TYPE_SYSID:
-		case BIBOOTWHAT_TYPE_MB:
-		case BIBOOTWHAT_TYPE_REBOOT:
-		case BIBOOTWHAT_TYPE_AUTO:
-		case BIBOOTWHAT_TYPE_RESTART:
-		case BIBOOTWHAT_TYPE_DISKPART:
-			WTFerror(&wtf, "unexpected bootwhat type: %d", br.what->type);
-			return TEST_ERROR;
-	}
-  
+
+      // *** NOT IMPLEMENTED *** //
+    case BIBOOTWHAT_TYPE_SYSID:
+    case BIBOOTWHAT_TYPE_MB:
+    case BIBOOTWHAT_TYPE_REBOOT:
+    case BIBOOTWHAT_TYPE_AUTO:
+    case BIBOOTWHAT_TYPE_RESTART:
+    case BIBOOTWHAT_TYPE_DISKPART:
+      WTFerror(&wtf, "unexpected bootwhat type: %d", br.what->type);
+      return TEST_ERROR;
+  }
+
 
   if(err)
   {
     WTFerror(&wtf, "booting mfs failed %d", err);
   }
-  
+
   return TEST_OK;
 }
