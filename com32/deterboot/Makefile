@@ -18,7 +18,7 @@ include $(MAKEDIR)/elf.mk
 
 #LNXLIBS	   = $(objdir)/com32/libutil/libutil_lnx.a
 
-MODULES	  = deterboot.c32 deterboot-test.c32
+MODULES	  = deterboot.c32 deterboot-test.c32 edgeboot.c32
 TESTFILES =
 CFLAGS += -I$(topdir)/com32
 CFLAGS += -I$(topdir)/core
@@ -35,6 +35,9 @@ deterboot.elf : $(OBJS) $(C_LIBS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 deterboot-test.elf : $(TOBJS) $(C_LIBS) $(LIBHIREDIS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+edgeboot.elf : edgeboot.o deterboot.o $(C_LIBS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 tidy dist:
