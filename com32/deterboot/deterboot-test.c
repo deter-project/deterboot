@@ -79,13 +79,6 @@ int do_getNetInfo(void)
 
 int doMFSBoot(const char *path) 
 {
-  if(strcmp(path, "http://192.168.252.1/linux-mfs") != 0)
-  {
-    //WTFerror(&wtf, "unexpected mfs path: %s\n", path);
-    printf("unexpected mfs path: %s\n", path);
-    return TEST_ERROR;
-  }
-  //WTFok(&wtf, "jumping into mfs now ...");
   return bootMFS(path);
 }
 
