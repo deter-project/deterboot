@@ -27,7 +27,7 @@ CFLAGS += -I$(topdir)/core/lwip/src/include/ipv4
 
 OBJS = deterboot.o main.o
 
-TOBJS = deterboot-test.o testing.o deterboot.o walrus.o
+TOBJS = deterboot-test.o testing.o deterboot.o
 
 all: $(MODULES) $(TESTFILES)
 
