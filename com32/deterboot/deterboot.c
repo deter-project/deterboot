@@ -193,7 +193,10 @@ int bootMFS(const void *path)
 {
   const char *fmt =
     "linux.c32 %s/bzImage initrd=%s/rootfs.cpio.gz BOOT=live "
-    "console=ttyS0,115200, console=ttyS1,115200, console=ttyS2,115200, console=tty1 "
+    "console=ttyS0,115200, "
+    "console=ttyS1,115200, "
+    "console=ttyS2,115200, "
+    "console=tty1 "
     "biosdevname=0 net.ifnames=0 ";
 
   size_t sz = snprintf(NULL, 0, fmt, path, path);
